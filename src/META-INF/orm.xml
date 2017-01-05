@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="kr.sample.spring.models.User">
+        <table name="USER" schema="sample-sboot" catalog=""/>
+        <attributes>
+            <id name="id">
+                <column name="ID" precision="10"/>
+            </id>
+            <basic name="userid">
+                <column name="USERID" length="50"/>
+            </basic>
+            <basic name="password">
+                <column name="PASSWORD"/>
+            </basic>
+            <basic name="name">
+                <column name="NAME" length="100"/>
+            </basic>
+            <basic name="email">
+                <column name="EMAIL" length="100"/>
+            </basic>
+            <basic name="age">
+                <column name="AGE" nullable="false" precision="3"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>
