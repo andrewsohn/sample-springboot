@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -17,58 +19,57 @@ import java.util.List;
 @Repository
 @Transactional
 public class UserDao {
-    @Autowired
-    private SessionFactory _sessionFactory;
-
-//    @Autowired
-//    private PasswordEncoder _passwordEncoder;
-
-    private Session getSession() {
-        return _sessionFactory.getCurrentSession();
+    /* Get All Users For Dashboard */
+    public List<User> getAllUserList() {
+        return entityManager.createQuery("from User").getResultList();
     }
+    /* Save the user in the database */
+    public User create(User user) {
+        entityManager.persist(user);
 
-    public void save(User user) {
-        getSession().save(user);
-        return;
+        return (User) entityManager.createQuery(
+                "from User where email = :email AND password = :pass AND userid = :userid")
+                .setParameter("email", user.getEmail()).setParameter("pass", user.getPassword()).setParameter("userid", user.getUserid())
+                .getSingleResult();
     }
-
+    /* Delete the user from the database. */
     public void delete(User user) {
-        getSession().delete(user);
+        if (entityManager.contains(user))
+            entityManager.remove(user);
+        else
+            entityManager.remove(entityManager.merge(user));
         return;
     }
 
-    @SuppressWarnings("unchecked")
-    public List<User> getAll() {
-        return getSession().createQuery("from User").list();
+    /* Find Id */
+    public User getById(int id) {
+        return entityManager.find(User.class, id);
     }
 
-    public User getByEmail(String email) {
-        return (User) getSession().createQuery(
-                "from User where email = :email")
-                .setParameter("email", email)
-                .uniqueResult();
+    /* Find userId */
+    public User getByUserId(String userid) {
+        return (User) entityManager.createQuery(
+                "from User where userid = :userid")
+                .setParameter("userid", userid)
+                .getSingleResult();
     }
 
-    public User getById(long id) {
-        return (User) getSession().load(User.class, id);
-    }
-
-    public User getControlUser(String userId, String pass) {
-
-//        _passwordEncoder = new BCryptPasswordEncoder();
-//        String hashedPassword = _passwordEncoder.encode(pass);
-
-        return (User) getSession().createQuery(
-                "from User where userid = :userId and password = :password")
-                .setParameter("userId", userId)
-//                .setParameter("password", hashedPassword)
-                .uniqueResult();
+    public User getControlUser(String username,String password) {
+        return (User) entityManager.createQuery(
+                "from User where name = :username AND password = :pass")
+                .setParameter("username", username).setParameter("pass", password)
+                .getSingleResult();
     }
 
 
-
+    /**
+     * Update the passed user in the database.
+     */
     public void update(User user) {
-        getSession().update(user);
+        entityManager.merge(user);
         return;
     }
+
+    @PersistenceContext
+    private EntityManager entityManager;
 }

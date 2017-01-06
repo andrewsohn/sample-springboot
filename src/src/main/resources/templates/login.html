@@ -46,10 +46,10 @@
                     Log In
                 </div>
                 <div class="panel-body">
-                    <form role="form">
+                    <form role="form" class="frm-login">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" id="lgnUserName" placeholder="Username" name="username" type="username" />
+                                <input class="form-control" id="lgnUserName" placeholder="Username" name="userid" type="username" />
                             </div>
                             <div class="form-group">
                                 <input class="form-control" id="lgnPass" placeholder="Password" name="password" type="password" value="" />
@@ -73,6 +73,7 @@
                             </div>
 
                             <!-- Change this to a button or input when using this as a form -->
+                            <a class="navbar-brand" th:href="@{/register}">Register</a>
                             <a id="btnLogin" href="#" class="btn btn-lg btn-success btn-block">Login</a>
                         </fieldset>
                     </form>
@@ -83,7 +84,7 @@
 </div>
 
 <!-- jQuery -->
-<script th:src="@{static/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{static/dist/js/jquery.min.js}"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script th:src="@{static/vendor/bootstrap/js/bootstrap.min.js}"></script>
@@ -95,7 +96,7 @@
 <script th:src="@{static/dist/js/sb-admin-2.js}"></script>
 
 <!-- Todolist Custom -->
-<script th:src="@{static/js/todolist_custom.js}"></script>
+<script th:src="@{static/js/login.js}"></script>
 
 
 </body>
